@@ -396,6 +396,22 @@ prompt_admin_details() {
     CFG_ADMIN_USERNAME="${CFG_ADMIN_USERNAME:-admin}"
     CFG_ADMIN_PASSWORD="${CFG_ADMIN_PASSWORD:-12345678}"
 
+    # Ask timezone LAST. Pressing ENTER uses Asia/Kolkata.
+    echo ""
+    echo -e "${BCYAN}>>> Panel timezone (press ENTER for default)${NC}"
+    while true; do
+        read -rp "$(echo -e ${YELLOW}"Timezone [default: Asia/Kolkata]: "${NC})" timezone_input
+        CFG_TIMEZONE="${timezone_input:-Asia/Kolkata}"
+
+        if [ -f "/usr/share/zoneinfo/$CFG_TIMEZONE" ]; then
+            break
+        fi
+
+        echo -e "${BRED}Invalid timezone: ${CFG_TIMEZONE}${NC}"
+        echo -e "${YELLOW}Example: Asia/Kolkata, UTC, Europe/London. Please try again.${NC}"
+    done
+
+    echo -e "${BGREEN}Using timezone: ${CFG_TIMEZONE}${NC}"
     return 0
 }
 
